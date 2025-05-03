@@ -1,5 +1,5 @@
 import { db } from './db';
-import { aiSettings } from '../shared/schema';
+import { aiSettings, users } from '../shared/schema';
 import { eq } from 'drizzle-orm';
 
 /**
@@ -34,6 +34,21 @@ export async function initializeDatabase() {
       console.log('Default AI settings created successfully.');
     } else {
       console.log('Database already contains AI settings.');
+    }
+    
+    // Check if there's a default user (for testing purposes)
+    const existingUsers = await db.select().from(users).limit(1);
+    
+    if (existingUsers.length === 0 && process.env.NODE_ENV === 'development') {
+      console.log('Creating a default test user for development...');
+      
+      // Only create a default user in development mode
+      await db.insert(users).values({
+        username: "admin",
+        password: "admin123" // This is for development only
+      });
+      
+      console.log('Default test user created for development.');
     }
     
     console.log('Database initialization complete.');
