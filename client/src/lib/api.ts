@@ -5,12 +5,14 @@ import { AISettings, MaterialInputForm, MaterialProcessingResponse, BatchProcess
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Debug logging
-console.log('Environment Variables:', {
+console.log('API Configuration:', {
   VITE_API_URL: import.meta.env.VITE_API_URL,
   PROD: import.meta.env.PROD,
   MODE: import.meta.env.MODE,
   BASE_URL: import.meta.env.BASE_URL,
-  NODE_ENV: process.env.NODE_ENV
+  NODE_ENV: process.env.NODE_ENV,
+  'Window Location': window.location.href,
+  'API Base URL': API_BASE_URL
 });
 
 // Process a single material
@@ -34,12 +36,12 @@ export async function processMaterial(
     };
 
     const url = `${API_BASE_URL}/process-material`;
-    console.log('API Configuration:', {
+    console.log('Making API Request:', {
+      url,
+      method: 'POST',
       baseUrl: API_BASE_URL,
-      fullUrl: url,
-      isProduction: import.meta.env.PROD,
-      mode: import.meta.env.MODE,
-      env: import.meta.env
+      environment: import.meta.env,
+      requestData
     });
     
     const response = await fetch(url, {
@@ -52,22 +54,25 @@ export async function processMaterial(
       mode: 'cors'
     });
 
-    console.log('API Response:', {
+    console.log('API Response Details:', {
       status: response.status,
       statusText: response.statusText,
       headers: Object.fromEntries(response.headers.entries()),
       url: response.url,
       redirected: response.redirected,
-      type: response.type
+      type: response.type,
+      'Response URL': response.url,
+      'Request URL': url
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('API Error:', {
+      console.error('API Error Details:', {
         status: response.status,
         statusText: response.statusText,
         error: errorText,
-        url: response.url
+        url: response.url,
+        'Request URL': url
       });
       throw new Error(errorText || response.statusText);
     }
