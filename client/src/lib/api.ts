@@ -2,7 +2,9 @@ import { AISettings, MaterialInputForm, MaterialProcessingResponse, BatchProcess
 
 // In development, we use the proxy, so we don't need the base URL
 // In production, we use the full Elastic Beanstalk URL
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const API_BASE_URL = import.meta.env.PROD 
+  ? import.meta.env.VITE_API_URL 
+  : '/api';
 
 // Debug logging
 console.log('API Configuration:', {
@@ -12,7 +14,8 @@ console.log('API Configuration:', {
   BASE_URL: import.meta.env.BASE_URL,
   NODE_ENV: process.env.NODE_ENV,
   'Window Location': window.location.href,
-  'API Base URL': API_BASE_URL
+  'API Base URL': API_BASE_URL,
+  'Is Production': import.meta.env.PROD
 });
 
 // Process a single material
@@ -41,7 +44,8 @@ export async function processMaterial(
       method: 'POST',
       baseUrl: API_BASE_URL,
       environment: import.meta.env,
-      requestData
+      requestData,
+      'Is Production': import.meta.env.PROD
     });
     
     const response = await fetch(url, {
@@ -62,7 +66,8 @@ export async function processMaterial(
       redirected: response.redirected,
       type: response.type,
       'Response URL': response.url,
-      'Request URL': url
+      'Request URL': url,
+      'Is Production': import.meta.env.PROD
     });
 
     if (!response.ok) {
@@ -72,7 +77,8 @@ export async function processMaterial(
         statusText: response.statusText,
         error: errorText,
         url: response.url,
-        'Request URL': url
+        'Request URL': url,
+        'Is Production': import.meta.env.PROD
       });
       throw new Error(errorText || response.statusText);
     }

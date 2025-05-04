@@ -14,7 +14,8 @@ const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:5173',
   process.env.AMPLIFY_URL,
   'https://*.amplifyapp.com',
-  'https://main.d2jjktrxvp3w1j.amplifyapp.com'
+  'https://main.d2jjktrxvp3w1j.amplifyapp.com',
+  'https://matclassifier-prod.eba-j7psmy8d.eu-north-1.elasticbeanstalk.com'
 ].filter(Boolean);
 
 console.log('CORS Configuration:', {
@@ -36,7 +37,8 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
+  exposedHeaders: ['Content-Length', 'Content-Type']
 }));
 
 // Add request logging middleware
