@@ -2,7 +2,7 @@ import { AISettings, MaterialInputForm, MaterialProcessingResponse, BatchProcess
 
 // In development, we use the proxy, so we don't need the base URL
 // In production, we use the full Elastic Beanstalk URL
-const API_BASE_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL : '';
+const API_BASE_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL : '/api';
 
 // Process a single material
 export async function processMaterial(
@@ -24,7 +24,8 @@ export async function processMaterial(
       longDescLimit: aiSettings.longDescLimit,
     };
 
-    const response = await fetch(`${API_BASE_URL}/api/process-material`, {
+    console.log('Making API request to:', `${API_BASE_URL}/process-material`);
+    const response = await fetch(`${API_BASE_URL}/process-material`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,7 +69,7 @@ export async function processBatch(
       formData.append('examples', JSON.stringify(aiSettings.examples));
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/process-batch`, {
+    const response = await fetch(`${API_BASE_URL}/process-batch`, {
       method: 'POST',
       body: formData,
       credentials: 'include',
@@ -89,7 +90,7 @@ export async function processBatch(
 // Get all materials
 export async function getMaterials() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/materials`, {
+    const response = await fetch(`${API_BASE_URL}/materials`, {
       credentials: 'include',
     });
 
@@ -108,7 +109,7 @@ export async function getMaterials() {
 // Get a single material by ID
 export async function getMaterial(id: number) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/materials/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/materials/${id}`, {
       credentials: 'include',
     });
 
@@ -127,7 +128,7 @@ export async function getMaterial(id: number) {
 // Get all processing history
 export async function getProcessingHistory() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/processing-history`, {
+    const response = await fetch(`${API_BASE_URL}/processing-history`, {
       credentials: 'include',
     });
 
@@ -146,7 +147,7 @@ export async function getProcessingHistory() {
 // Get default AI settings
 export async function getDefaultAISettings(): Promise<AISettings> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/ai-settings/default`, {
+    const response = await fetch(`${API_BASE_URL}/ai-settings/default`, {
       credentials: 'include',
     });
 
@@ -165,7 +166,7 @@ export async function getDefaultAISettings(): Promise<AISettings> {
 // Update AI settings
 export async function updateAISettings(id: number, settings: Partial<AISettings>): Promise<AISettings> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/ai-settings/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/ai-settings/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -189,7 +190,7 @@ export async function updateAISettings(id: number, settings: Partial<AISettings>
 // Get learning examples
 export async function getLearningExamples() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/learning-examples`, {
+    const response = await fetch(`${API_BASE_URL}/learning-examples`, {
       credentials: 'include',
     });
 
@@ -208,7 +209,7 @@ export async function getLearningExamples() {
 // Create learning example
 export async function createLearningExample(example: { input: string; output: string }) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/learning-examples`, {
+    const response = await fetch(`${API_BASE_URL}/learning-examples`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -232,7 +233,7 @@ export async function createLearningExample(example: { input: string; output: st
 // Delete learning example
 export async function deleteLearningExample(id: number) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/learning-examples/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/learning-examples/${id}`, {
       method: 'DELETE',
       credentials: 'include',
     });
