@@ -8,7 +8,9 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 console.log('Environment Variables:', {
   VITE_API_URL: import.meta.env.VITE_API_URL,
   PROD: import.meta.env.PROD,
-  MODE: import.meta.env.MODE
+  MODE: import.meta.env.MODE,
+  BASE_URL: import.meta.env.BASE_URL,
+  NODE_ENV: process.env.NODE_ENV
 });
 
 // Process a single material
@@ -33,6 +35,7 @@ export async function processMaterial(
 
     const url = `${API_BASE_URL}/process-material`;
     console.log('Making API request to:', url, 'with data:', requestData);
+    console.log('Full environment:', import.meta.env);
     
     const response = await fetch(url, {
       method: 'POST',
@@ -46,7 +49,8 @@ export async function processMaterial(
     console.log('API Response:', {
       status: response.status,
       statusText: response.statusText,
-      headers: Object.fromEntries(response.headers.entries())
+      headers: Object.fromEntries(response.headers.entries()),
+      url: response.url
     });
 
     if (!response.ok) {
