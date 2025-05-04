@@ -45,13 +45,15 @@ export async function processMaterial(
       baseUrl: API_BASE_URL,
       environment: import.meta.env,
       requestData,
-      'Is Production': import.meta.env.PROD
+      'Is Production': import.meta.env.PROD,
+      'Full URL': url
     });
     
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Origin': window.location.origin
       },
       body: JSON.stringify(requestData),
       credentials: 'include',
