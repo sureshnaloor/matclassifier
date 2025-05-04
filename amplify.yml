@@ -20,4 +20,13 @@ applications:
       cache:
         paths:
           - client/node_modules/**/*
-          - .npm/**/* 
+          - .npm/**/*
+      customHeaders:
+        - pattern: '**/*'
+          headers:
+            - key: 'Cache-Control'
+              value: 'no-cache, no-store, must-revalidate'
+      rewrites:
+        - source: /<*> 
+          target: /index.html
+          status: '200' 
