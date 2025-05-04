@@ -4,16 +4,17 @@ applications:
       phases:
         preBuild:
           commands:
+            - cd client
             - npm ci
         build:
           commands:
             - echo "VITE_API_URL=$VITE_API_URL" > .env.production
             - npm run build
       artifacts:
-        baseDirectory: dist
+        baseDirectory: client/dist/public
         files:
           - '**/*'
       cache:
         paths:
-          - node_modules/**/*
+          - client/node_modules/**/*
           - .npm/**/* 
