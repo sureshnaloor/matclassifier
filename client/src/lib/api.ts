@@ -34,8 +34,13 @@ export async function processMaterial(
     };
 
     const url = `${API_BASE_URL}/process-material`;
-    console.log('Making API request to:', url, 'with data:', requestData);
-    console.log('Full environment:', import.meta.env);
+    console.log('API Configuration:', {
+      baseUrl: API_BASE_URL,
+      fullUrl: url,
+      isProduction: import.meta.env.PROD,
+      mode: import.meta.env.MODE,
+      env: import.meta.env
+    });
     
     const response = await fetch(url, {
       method: 'POST',
@@ -44,18 +49,26 @@ export async function processMaterial(
       },
       body: JSON.stringify(requestData),
       credentials: 'include',
+      mode: 'cors'
     });
 
     console.log('API Response:', {
       status: response.status,
       statusText: response.statusText,
       headers: Object.fromEntries(response.headers.entries()),
-      url: response.url
+      url: response.url,
+      redirected: response.redirected,
+      type: response.type
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('API Error:', errorText);
+      console.error('API Error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+        url: response.url
+      });
       throw new Error(errorText || response.statusText);
     }
 

@@ -13,17 +13,24 @@ app.use(express.urlencoded({ extended: false }));
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:5173',
   process.env.AMPLIFY_URL,
-  'https://*.amplifyapp.com' // Allow all Amplify domains
+  'https://*.amplifyapp.com',
+  'https://main.d2jjktrxvp3w1j.amplifyapp.com'
 ].filter(Boolean);
 
-console.log('Allowed CORS origins:', allowedOrigins);
+console.log('CORS Configuration:', {
+  allowedOrigins,
+  frontendUrl: process.env.FRONTEND_URL,
+  amplifyUrl: process.env.AMPLIFY_URL
+});
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    console.log('CORS Request Origin:', origin);
+    if (!origin || allowedOrigins.some(allowed => origin.match(new RegExp(allowed.replace('*', '.*'))))) {
+      console.log('CORS Allowed for origin:', origin);
       callback(null, true);
     } else {
-      console.log('CORS blocked origin:', origin);
+      console.log('CORS Blocked for origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -38,7 +45,8 @@ app.use((req, res, next) => {
     method: req.method,
     url: req.url,
     origin: req.headers.origin,
-    headers: req.headers
+    headers: req.headers,
+    host: req.headers.host
   });
   next();
 });
