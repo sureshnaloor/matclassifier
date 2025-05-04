@@ -164,7 +164,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             successful++;
           } catch (error) {
             if (error instanceof Error) {
-              errors.push({ row, error: error.message });
+            errors.push({ row, error: error.message });
             } else {
               errors.push({ row, error: 'Unknown error occurred' });
             }
