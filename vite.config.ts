@@ -31,15 +31,31 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
+    // This proxy configuration is only used in development mode
+    // In production, we use the full API URL from VITE_API_URL environment variable
     proxy: {
-      '^/api/.*': {
+      '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
-        secure: false
+        secure: false,
+        configure: (proxy, _options) => {
+          proxy.on('error', (err, _req, _res) => {
+            console.log('proxy error', err);
+          });
+          proxy.on('proxyReq', (proxyReq, req, _res) => {
+            console.log('Sending Request to the Target:', req.method, req.url);
+          });
+          proxy.on('proxyRes', (proxyRes, req, _res) => {
+            console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
+          });
+        },
       }
     }
   },
   define: {
-    'import.meta.env.PROD': JSON.stringify(process.env.NODE_ENV === 'production')
+    'import.meta.env.PROD': JSON.stringify(process.env.NODE_ENV === 'production'),
+    'import.meta.env.MODE': JSON.stringify(process.env.NODE_ENV || 'development'),
+    'import.meta.env.BASE_URL': JSON.stringify('/'),
+    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'http://localhost:8080')
   }
 });

@@ -1,5 +1,8 @@
 import { AISettings, MaterialInputForm, MaterialProcessingResponse, BatchProcessingResponse } from '@/types';
 
+// Debug message to verify the file is loaded
+console.log('API Module Loaded - Development Mode');
+
 // In development, we use the proxy, so we don't need the base URL
 // In production, we use the full Elastic Beanstalk URL
 const API_BASE_URL = import.meta.env.PROD 
@@ -15,7 +18,9 @@ console.log('API Configuration:', {
   NODE_ENV: process.env.NODE_ENV,
   'Window Location': window.location.href,
   'API Base URL': API_BASE_URL,
-  'Is Production': import.meta.env.PROD
+  'Is Production': import.meta.env.PROD,
+  'Using Proxy': !import.meta.env.PROD,
+  'Development Mode': import.meta.env.MODE === 'development'
 });
 
 // Process a single material
@@ -46,7 +51,9 @@ export async function processMaterial(
       environment: import.meta.env,
       requestData,
       'Is Production': import.meta.env.PROD,
-      'Full URL': url
+      'Full URL': url,
+      'Using Proxy': !import.meta.env.PROD,
+      'Development Mode': import.meta.env.MODE === 'development'
     });
     
     const response = await fetch(url, {
@@ -69,7 +76,9 @@ export async function processMaterial(
       type: response.type,
       'Response URL': response.url,
       'Request URL': url,
-      'Is Production': import.meta.env.PROD
+      'Is Production': import.meta.env.PROD,
+      'Using Proxy': !import.meta.env.PROD,
+      'Development Mode': import.meta.env.MODE === 'development'
     });
 
     if (!response.ok) {
@@ -80,7 +89,9 @@ export async function processMaterial(
         error: errorText,
         url: response.url,
         'Request URL': url,
-        'Is Production': import.meta.env.PROD
+        'Is Production': import.meta.env.PROD,
+        'Using Proxy': !import.meta.env.PROD,
+        'Development Mode': import.meta.env.MODE === 'development'
       });
       throw new Error(errorText || response.statusText);
     }
