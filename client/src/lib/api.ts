@@ -4,6 +4,13 @@ import { AISettings, MaterialInputForm, MaterialProcessingResponse, BatchProcess
 // In production, we use the full Elastic Beanstalk URL
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
+// Debug logging
+console.log('Environment Variables:', {
+  VITE_API_URL: import.meta.env.VITE_API_URL,
+  PROD: import.meta.env.PROD,
+  MODE: import.meta.env.MODE
+});
+
 // Process a single material
 export async function processMaterial(
   materialData: MaterialInputForm,
@@ -24,8 +31,10 @@ export async function processMaterial(
       longDescLimit: aiSettings.longDescLimit,
     };
 
-    console.log('Making API request to:', `${API_BASE_URL}/process-material`);
-    const response = await fetch(`${API_BASE_URL}/process-material`, {
+    const url = `${API_BASE_URL}/process-material`;
+    console.log('Making API request to:', url, 'with data:', requestData);
+    
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,12 +43,21 @@ export async function processMaterial(
       credentials: 'include',
     });
 
+    console.log('API Response:', {
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries())
+    });
+
     if (!response.ok) {
       const errorText = await response.text();
+      console.error('API Error:', errorText);
       throw new Error(errorText || response.statusText);
     }
 
-    return await response.json();
+    const result = await response.json();
+    console.log('API Success Response:', result);
+    return result;
   } catch (error) {
     console.error('Error processing material:', error);
     throw error;
