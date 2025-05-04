@@ -8,10 +8,10 @@ applications:
             - npm ci
         build:
           commands:
-            - echo "Current directory: $(pwd)"
-            - echo "VITE_API_URL=$VITE_API_URL"
-            - echo "VITE_API_URL=$VITE_API_URL" > .env.production
-            - cat .env.production
+            - 'echo "Current directory: $(pwd)"'
+            - 'echo "VITE_API_URL=$VITE_API_URL"'
+            - 'echo "VITE_API_URL=$VITE_API_URL" > .env.production'
+            - 'cat .env.production'
             - npm run build
       artifacts:
         baseDirectory: client/dist/public
