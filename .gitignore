@@ -45,3 +45,6 @@ coverage/
 # Drizzle migrations (if you want to include them, remove this line)
 # migrations/ 
 node_modules
+
+# certificates
+*.pem
