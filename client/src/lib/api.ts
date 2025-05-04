@@ -1,5 +1,9 @@
 import { AISettings, MaterialInputForm, MaterialProcessingResponse, BatchProcessingResponse } from '@/types';
 
+// In development, we use the proxy, so we don't need the base URL
+// In production, we use the full Elastic Beanstalk URL
+const API_BASE_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL : '';
+
 // Process a single material
 export async function processMaterial(
   materialData: MaterialInputForm,
@@ -20,7 +24,7 @@ export async function processMaterial(
       longDescLimit: aiSettings.longDescLimit,
     };
 
-    const response = await fetch('/api/process-material', {
+    const response = await fetch(`${API_BASE_URL}/api/process-material`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +68,7 @@ export async function processBatch(
       formData.append('examples', JSON.stringify(aiSettings.examples));
     }
 
-    const response = await fetch('/api/process-batch', {
+    const response = await fetch(`${API_BASE_URL}/api/process-batch`, {
       method: 'POST',
       body: formData,
       credentials: 'include',
@@ -85,7 +89,7 @@ export async function processBatch(
 // Get all materials
 export async function getMaterials() {
   try {
-    const response = await fetch('/api/materials', {
+    const response = await fetch(`${API_BASE_URL}/api/materials`, {
       credentials: 'include',
     });
 
@@ -104,7 +108,7 @@ export async function getMaterials() {
 // Get a single material by ID
 export async function getMaterial(id: number) {
   try {
-    const response = await fetch(`/api/materials/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/materials/${id}`, {
       credentials: 'include',
     });
 
@@ -123,7 +127,7 @@ export async function getMaterial(id: number) {
 // Get all processing history
 export async function getProcessingHistory() {
   try {
-    const response = await fetch('/api/processing-history', {
+    const response = await fetch(`${API_BASE_URL}/api/processing-history`, {
       credentials: 'include',
     });
 
@@ -142,7 +146,7 @@ export async function getProcessingHistory() {
 // Get default AI settings
 export async function getDefaultAISettings(): Promise<AISettings> {
   try {
-    const response = await fetch('/api/ai-settings/default', {
+    const response = await fetch(`${API_BASE_URL}/api/ai-settings/default`, {
       credentials: 'include',
     });
 
@@ -161,7 +165,7 @@ export async function getDefaultAISettings(): Promise<AISettings> {
 // Update AI settings
 export async function updateAISettings(id: number, settings: Partial<AISettings>): Promise<AISettings> {
   try {
-    const response = await fetch(`/api/ai-settings/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/ai-settings/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -185,7 +189,7 @@ export async function updateAISettings(id: number, settings: Partial<AISettings>
 // Get learning examples
 export async function getLearningExamples() {
   try {
-    const response = await fetch('/api/learning-examples', {
+    const response = await fetch(`${API_BASE_URL}/api/learning-examples`, {
       credentials: 'include',
     });
 
@@ -204,7 +208,7 @@ export async function getLearningExamples() {
 // Create learning example
 export async function createLearningExample(example: { input: string; output: string }) {
   try {
-    const response = await fetch('/api/learning-examples', {
+    const response = await fetch(`${API_BASE_URL}/api/learning-examples`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -228,7 +232,7 @@ export async function createLearningExample(example: { input: string; output: st
 // Delete learning example
 export async function deleteLearningExample(id: number) {
   try {
-    const response = await fetch(`/api/learning-examples/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/learning-examples/${id}`, {
       method: 'DELETE',
       credentials: 'include',
     });

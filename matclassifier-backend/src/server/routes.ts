@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
 import { processMaterial, AIProcessingRequestSchema, AIProcessingResponseSchema } from "./openai";
-import { insertMaterialSchema, insertProcessingResultSchema, insertLearningExampleSchema } from "@shared/schema";
+import { insertMaterialSchema, insertProcessingResultSchema, insertLearningExampleSchema } from "../shared/schema";
 import multer from "multer";
 import { parse as csvParse } from "csv-parse";
 import fs from "fs";
@@ -163,8 +163,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             results.push({ material, processingResult });
             successful++;
           } catch (error) {
-            console.error("Error processing row:", error);
-            errors.push({ row, error: error.message });
+            if (error instanceof Error) {
+              errors.push({ row, error: error.message });
+            } else {
+              errors.push({ row, error: 'Unknown error occurred' });
+            }
             failed++;
           }
         })

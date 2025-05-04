@@ -1,0 +1,16 @@
+# Node.js
+node_modules/
+npm-debug.log
+.env
+
+# Development
+.git/
+.gitignore
+README.md
+*.test.js
+*.spec.js
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

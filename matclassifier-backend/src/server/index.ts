@@ -3,11 +3,19 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { initializeDatabase } from './initDb';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Add CORS configuration before routes
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true
+}));
+
+// Logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -53,17 +61,15 @@ app.use((req, res, next) => {
       throw err;
     });
 
-    // importantly only setup vite in development and after
-    // setting up all the other routes so the catch-all route
-    // doesn't interfere with the other routes
-    if (app.get("env") === "development") {
-      await setupVite(app, server);
-    } else {
-      serveStatic(app);
-    }
+    // Remove or comment out this section
+    // if (app.get("env") === "development") {
+    //   await setupVite(app, server);
+    // } else {
+    //   serveStatic(app);
+    // }
 
-    // Use port 3000 instead of 5000
-    const port = 3000;
+    // Use port from environment variable or default to 3000
+    const port = process.env.PORT || 3000;
     server.listen(port, () => {
       log(`serving on http://localhost:${port}`);
     });

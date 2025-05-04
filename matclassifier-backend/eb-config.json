@@ -1,0 +1,48 @@
+{
+    "EnvironmentName": "matclassifier-prod",
+    "ApplicationName": "matclassifier-backend",
+    "Description": "Production environment for Material Classifier Backend",
+    "CNAMEPrefix": "matclassifier-prod",
+    "Tier": {
+        "Name": "WebServer",
+        "Type": "Standard"
+    },
+    "SolutionStackName": "64bit Amazon Linux 2023 v6.5.1 running Node.js 18",
+    "OptionSettings": [
+        {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "InstanceType",
+            "Value": "t3.micro"
+        },
+        {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "IamInstanceProfile",
+            "Value": "aws-elasticbeanstalk-ec2-role"
+        },
+        {
+            "Namespace": "aws:autoscaling:asg",
+            "OptionName": "MinSize",
+            "Value": "1"
+        },
+        {
+            "Namespace": "aws:autoscaling:asg",
+            "OptionName": "MaxSize",
+            "Value": "2"
+        },
+        {
+            "Namespace": "aws:elasticbeanstalk:environment",
+            "OptionName": "EnvironmentType",
+            "Value": "LoadBalanced"
+        },
+        {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "NODE_ENV",
+            "Value": "production"
+        },
+        {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "PORT",
+            "Value": "8080"
+        }
+    ]
+} 
