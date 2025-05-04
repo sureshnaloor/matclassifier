@@ -2,7 +2,7 @@ import { AISettings, MaterialInputForm, MaterialProcessingResponse, BatchProcess
 
 // In development, we use the proxy, so we don't need the base URL
 // In production, we use the full Elastic Beanstalk URL
-const API_BASE_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL : '/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Process a single material
 export async function processMaterial(

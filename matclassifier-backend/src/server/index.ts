@@ -11,7 +11,10 @@ app.use(express.urlencoded({ extended: false }));
 
 // Add CORS configuration before routes
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: [
+    process.env.FRONTEND_URL || 'http://localhost:5173',
+    process.env.AMPLIFY_URL // Add your Amplify domain here
+  ],
   credentials: true
 }));
 
