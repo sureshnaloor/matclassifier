@@ -27,6 +27,9 @@ applications:
             - key: 'Cache-Control'
               value: 'no-cache, no-store, must-revalidate'
       rewrites:
+        - source: /api/<*>
+          target: /api/<*>
+          status: '200'
         - source: /<*> 
           target: /index.html
           status: '200' 

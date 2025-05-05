@@ -57,6 +57,10 @@ export default defineConfig({
     'import.meta.env.PROD': JSON.stringify(process.env.NODE_ENV === 'production'),
     'import.meta.env.MODE': JSON.stringify(process.env.NODE_ENV || 'development'),
     'import.meta.env.BASE_URL': JSON.stringify('/'),
-    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'http://localhost:8080')
+    'import.meta.env.VITE_API_URL': JSON.stringify(
+      process.env.NODE_ENV === 'production' 
+        ? 'https://matclassifier-prod.eba-j7psmy8d.eu-north-1.elasticbeanstalk.com'
+        : process.env.VITE_API_URL || 'http://localhost:8080'
+    )
   }
 });
