@@ -26,6 +26,7 @@ export function LearningContext({ aiSettings, onChange }: LearningContextProps) 
   const { data: fetchedExamples } = useQuery<LearningExample[]>({
     queryKey: ['/api/learning-examples'],
     enabled: learningMode !== 'none',
+    initialData: [] // Provide initial data to avoid undefined
   });
 
   useEffect(() => {
