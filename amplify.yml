@@ -28,7 +28,7 @@ applications:
               value: 'no-cache, no-store, must-revalidate'
       rewrites:
         - source: /api/<*>
-          target: /api/<*>
+          target: http://matclassifier-prod.eba-j7psmy8d.eu-north-1.elasticbeanstalk.com/api/<*>
           status: '200'
         - source: /<*> 
           target: /index.html
