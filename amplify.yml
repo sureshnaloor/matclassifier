@@ -5,7 +5,7 @@ applications:
         preBuild:
           commands:
             - cd client
-            - npm ci
+            - npm install
         build:
           commands:
             - 'echo "VITE_API_URL=$VITE_API_URL"'
