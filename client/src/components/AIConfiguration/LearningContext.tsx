@@ -23,7 +23,7 @@ export function LearningContext({ aiSettings, onChange }: LearningContextProps) 
   const { toast } = useToast();
 
   // Fetch all learning examples
-  const { data: fetchedExamples } = useQuery({
+  const { data: fetchedExamples } = useQuery<LearningExample[]>({
     queryKey: ['/api/learning-examples'],
     enabled: learningMode !== 'none',
   });

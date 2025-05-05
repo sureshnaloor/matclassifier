@@ -1,7 +1,7 @@
 import { MLClassification, AlternativeClassification } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CircleCheck, Sparkles, ArrowRight, AlertCircle, BarChart3 } from 'lucide-react';
+import { CheckCircle2, Sparkles, ArrowRight, AlertCircle, BarChart3 } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 
 interface MLClassificationResultProps {
@@ -139,7 +139,7 @@ function AlternativeClassificationItem({
       <div className="flex items-start justify-between">
         <div className="flex items-start">
           {isCurrentClassification ? (
-            <CircleCheck className="h-4 w-4 text-green-600 mt-0.5 mr-2 flex-shrink-0" />
+            <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 mr-2 flex-shrink-0" />
           ) : (
             <ArrowRight className="h-4 w-4 text-gray-400 mt-0.5 mr-2 flex-shrink-0" />
           )}
