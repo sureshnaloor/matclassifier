@@ -59,7 +59,7 @@ export default defineConfig({
     'import.meta.env.BASE_URL': JSON.stringify('/'),
     'import.meta.env.VITE_API_URL': JSON.stringify(
       process.env.NODE_ENV === 'production' 
-        ? 'https://matclassifier-prod.eba-j7psmy8d.eu-north-1.elasticbeanstalk.com'
+        ? 'https://api.smartclass.in.net'
         : process.env.VITE_API_URL || 'http://localhost:8080'
     )
   }
