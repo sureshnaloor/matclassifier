@@ -15,7 +15,11 @@ const allowedOrigins = [
   process.env.AMPLIFY_URL,
   'https://*.amplifyapp.com',
   'https://main.d2jjktrxvp3w1j.amplifyapp.com',
-  'https://matclassifier-prod.eba-j7psmy8d.eu-north-1.elasticbeanstalk.com'
+  'https://matclassifier-prod.eba-j7psmy8d.eu-north-1.elasticbeanstalk.com',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://smartclass.in.net',
+  'http://smartclass.in.net'
 ].filter(Boolean);
 
 console.log('CORS Configuration:', {
@@ -26,18 +30,37 @@ console.log('CORS Configuration:', {
 
 app.use(cors({
   origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) {
+      console.log('CORS: No origin provided, allowing request');
+      return callback(null, true);
+    }
+
     console.log('CORS Request Origin:', origin);
-    if (!origin || allowedOrigins.some(allowed => origin.match(new RegExp(allowed.replace('*', '.*'))))) {
-      console.log('CORS Allowed for origin:', origin);
+    
+    // Check if origin matches any allowed pattern
+    const isAllowed = allowedOrigins.some(allowed => {
+      // Convert wildcard pattern to regex
+      const pattern = allowed.replace(/\./g, '\\.').replace(/\*/g, '.*');
+      const regex = new RegExp(`^${pattern}$`);
+      const matches = regex.test(origin);
+      if (matches) {
+        console.log(`CORS: Origin ${origin} matches pattern ${allowed}`);
+      }
+      return matches;
+    });
+
+    if (isAllowed) {
+      console.log('CORS: Allowing request from origin:', origin);
       callback(null, true);
     } else {
-      console.log('CORS Blocked for origin:', origin);
-      callback(new Error('Not allowed by CORS'));
+      console.log('CORS: Blocking request from origin:', origin);
+      callback(new Error(`Not allowed by CORS: ${origin}`));
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept', 'X-Requested-With'],
   exposedHeaders: ['Content-Length', 'Content-Type']
 }));
 
