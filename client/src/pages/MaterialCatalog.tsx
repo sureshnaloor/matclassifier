@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { 
   Card, 
   CardContent, 
@@ -25,6 +25,7 @@ import { Loader2 } from 'lucide-react';
 
 export default function MaterialCatalog() {
   const [searchTerm, setSearchTerm] = useState('');
+  const queryClient = useQueryClient();
   
   const { data: materials, isLoading } = useQuery<Material[]>({
     queryKey: ['/api/materials'],
@@ -103,6 +104,11 @@ export default function MaterialCatalog() {
                         {material.shortDescription && (
                           <div className="text-xs text-gray-500 mt-1 font-mono">
                             {material.shortDescription}
+                          </div>
+                        )}
+                        {material.longDescription && (
+                          <div className="text-sm text-gray-600 mt-2">
+                            {material.longDescription}
                           </div>
                         )}
                       </TableCell>

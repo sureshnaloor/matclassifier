@@ -3,12 +3,13 @@ import { SingleMaterialForm } from './SingleMaterialForm';
 import { BatchUploadForm } from './BatchUploadForm';
 import { ResultsView } from './ResultsView';
 import { AIConfigPanel } from '../AIConfiguration/AIConfigPanel';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AISettings, MaterialProcessingResponse } from '@/types';
 
 export function ProcessingTabs() {
   const [activeTab, setActiveTab] = useState<'single' | 'batch' | 'results'>('single');
   const [processingResult, setProcessingResult] = useState<MaterialProcessingResponse | null>(null);
+  const queryClient = useQueryClient();
 
   // Fetch default AI settings
   const { data: aiSettings, isLoading: isLoadingSettings } = useQuery({
@@ -22,6 +23,8 @@ export function ProcessingTabs() {
   const handleProcessingComplete = (result: MaterialProcessingResponse) => {
     setProcessingResult(result);
     setActiveTab('results');
+    // Invalidate materials query to trigger a refetch
+    queryClient.invalidateQueries({ queryKey: ['/api/materials'] });
   };
 
   return (
