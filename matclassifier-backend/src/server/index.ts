@@ -19,7 +19,11 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://smartclass.in.net',
-  'http://smartclass.in.net'
+  'http://smartclass.in.net',
+  'https://api.smartclass.in.net',
+  'http://api.smartclass.in.net',
+  'https://*.smartclass.in.net',
+  'http://*.smartclass.in.net'
 ].filter(Boolean);
 
 console.log('CORS Configuration:', {
